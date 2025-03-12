@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import render, redirect
 from django.views import View
 
 
@@ -42,11 +44,23 @@ class SnippetsByLanguage(View):
         return render(request, "index.html", {"snippets": []})  # Placeholder
 
 
-# class Login(View):
-#    TODO: Implement login view logic with AuthenticationForm and login handling.
+class Login(View):
+    def get(self, request):
+        form = AuthenticationForm()
+        return render(request, "login.html", {'form': form})
 
-# class Logout(View):
-#    TODO: Implement logout view logic.
+    def post(self, request):
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('index')
+        return render(request, "login.html", {'form': form})
+
+class Logout(View):
+    def get(self, request):
+        logout(request)
+        return redirect('index')
 
 
 class Index(View):
