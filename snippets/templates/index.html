@@ -17,7 +17,10 @@
                         <a href="{% url 'snippet'  i.id %}" class="btn btn-primary">Ver</a>
                         {% if request.user.username == i.user.username %}
                             <a href="{% url 'snippet_edit' id=i.id %}" class="btn btn-info">Editar</a>
-                            <a href="{% url 'snippet_delete' id=i.id %}" class="btn btn-danger">Eliminar</a>
+                            <form id="delete-form-{{ i.id }}" action="{% url 'snippet_delete' id=i.id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="button" class="btn btn-danger" onclick="confirmDelete({{ i.id }})">Eliminar</button>
+                            </form>
                         {% endif %}
                     </div>
                 </div>
@@ -26,4 +29,11 @@
             <!-- FIN SNIPPET -->
         </div>
     </div>
+    <script>
+        function confirmDelete(id) {
+            if (confirm("¿Estás seguro de que deseas eliminar este snippet? Esta acción no se puede deshacer.")) {
+                document.getElementById(`delete-form-${id}`).submit();
+            }
+        }
+    </script>
 {% endblock %}
