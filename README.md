@@ -18,13 +18,17 @@ Sistema web basado en Django con autenticación de usuarios, integración con Re
 ### 1️⃣ Clonar el repositorio
 ```bash
 git clone https://github.com/miguelpuente/snippets_test/
-cd django-snippets
+cd snippets_test
 ```
 2️⃣ Crear un entorno virtual
 ```bash
 python -m venv venv
+
 source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows
+
+cd venv/Scripts/     # Windows
+activate
+cd ../..
 ```
 3️⃣ Instalar dependencias
 ```bash
@@ -35,7 +39,7 @@ pip install -r requirements.txt
 Renombrar .env.example a .env y editar con las credenciales necesarias:
 
 ```bash
-mv .env.example .env
+mv django_snippets/.env.example django_snippets/.env
 ```
 
 Modificar .env:
