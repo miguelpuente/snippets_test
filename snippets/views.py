@@ -1,8 +1,8 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-
+from .models import Snippet, Language
 
 # class SnippetAdd(View):
 #    TODO: Implement this class to handle snippet creation, only for authenticated users.
@@ -40,8 +40,11 @@ class UserSnippets(View):
 class SnippetsByLanguage(View):
     def get(self, request, *args, **kwargs):
         language = self.kwargs["language"]
-        # TODO: Fetch snippets based on language
-        return render(request, "index.html", {"snippets": []})  # Placeholder
+        language = get_object_or_404(Language, slug=language)
+
+        snippets = Snippet.objects.filter(language=language, public=True).defer('snippet', 'public')
+
+        return render(request, "index.html", {"snippets": snippets})
 
 
 class Login(View):
