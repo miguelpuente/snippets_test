@@ -39,7 +39,7 @@ django-crispy-forms==2.3
     # via -r requirements.in
 kombu==5.4.2
     # via celery
-mysqlclient==
+mysqlclient==2.2.7
 packaging==24.1
     # via gunicorn
 prompt-toolkit==3.0.48
