@@ -22,10 +22,20 @@
                         <hr>
                         <br>
                         <a href="{% url 'snippet_edit' id=snippet.id %}" class="btn btn-info">Editar</a>
-                        <a href="{% url 'snippet_delete' id=snippet.id %}" class="btn btn-danger">Eliminar</a>
+                        <form id="delete-form-{{ snippet.id }}" action="{% url 'snippet_delete' id=snippet.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="button" class="btn btn-danger" onclick="confirmDelete({{ snippet.id }})">Eliminar</button>
+                        </form>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
+    <script>
+    function confirmDelete(id) {
+        if (confirm("¿Estás seguro de que deseas eliminar este snippet? Esta acción no se puede deshacer.")) {
+            document.getElementById(`delete-form-${id}`).submit();
+        }
+    }
+    </script>
 {% endblock %}
