@@ -10,6 +10,7 @@ from pygments.formatters import HtmlFormatter
 from pygments import highlight
 from .models import Snippet, Language
 from .forms import SnippetForm
+from .tasks import sendEmailInSnippetCreation
 
 class SnippetAdd(LoginRequiredMixin, View):
     template_name = "snippets/snippet_add.html"
@@ -25,6 +26,7 @@ class SnippetAdd(LoginRequiredMixin, View):
             snippet = form.save(commit=False)
             snippet.user = request.user
             snippet.save()
+            sendEmailInSnippetCreation.delay(snippet.name, snippet.description, request.user.email)
             return redirect("snippet", id=snippet.id)
         return render(request, self.template_name, {"form": form, "action": "Add"})
 
